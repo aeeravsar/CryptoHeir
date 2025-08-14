@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoHeir - Cryptocurrency Inheritance</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        dark: {
+                            50: '#18181b',
+                            100: '#27272a',
+                            200: '#3f3f46',
+                            300: '#52525b',
+                            400: '#71717a',
+                            500: '#a1a1aa',
+                            600: '#d4d4d8',
+                            700: '#e4e4e7',
+                            800: '#f4f4f5',
+                            900: '#fafafa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/dark-theme.css">
+</head>
+<body class="dark bg-dark-50 text-dark-800 font-inter">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-dark-100 border-b border-dark-200 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-3">
+                        <h1 class="text-2xl font-bold gradient-text-animated cursor-pointer" onclick="scrollToTop()" title="Back to top">
+                            CryptoHeir
+                        </h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="network-selector">
+                            <div class="flex items-center space-x-2 px-3 py-1.5 bg-dark-200 rounded-full text-sm cursor-pointer hover:bg-dark-300 transition-all" id="networkIndicator" onclick="toggleNetworkDropdown()">
+                                <div class="w-2 h-2 bg-red-500 rounded-full" id="networkDot"></div>
+                                <span id="networkName" class="text-dark-500">Ethereum Mainnet</span>
+                                <svg class="w-4 h-4 text-dark-500 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="network-dropdown" id="networkDropdown">
+                                <div class="network-option" data-chain-id="1" onclick="selectNetwork(1)">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Ethereum Mainnet</span>
+                                </div>
+                                <div class="network-option" data-chain-id="11155111" onclick="selectNetwork(11155111)">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>Sepolia Testnet</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105" id="connectWalletBtn">
+                            Connect Wallet
+                        </button>
+                        <div class="hidden text-sm bg-dark-200 px-3 py-1.5 rounded-lg" id="walletAddress"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Hero Landing Section - Always visible -->
+                <div class="min-h-[85vh] flex items-center justify-center hero-background" id="heroSection">
+                    <div class="max-w-6xl mx-auto">
+                        <!-- Main Hero Content -->
+                        <div class="text-center mb-16 hero-animate-in">
+                            <!-- Hero Icon with Animation -->
+                            <div class="mb-8">
+                                <div class="w-32 h-32 bg-gradient-to-br from-primary-400 via-primary-500 to-primary-700 rounded-3xl mx-auto flex items-center justify-center shadow-2xl glow-effect p-4">
+                                    <img src="logo.png" alt="CryptoHeir Logo" class="w-full h-full object-contain filter brightness-110">
+                                </div>
+                            </div>
+                            
+                            <!-- Main Headline -->
+                            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight gradient-text-animated">
+                                CryptoHeir
+                            </h1>
+                            
+                            <!-- Tagline -->
+                            <p class="text-xl md:text-2xl text-dark-600 mb-4 font-medium">
+                                Secure Your Digital Legacy
+                            </p>
+                            <p class="text-lg text-dark-500 mb-12 max-w-3xl mx-auto leading-relaxed">
+                                The first <strong class="text-primary-500">free & open-source</strong> cryptocurrency inheritance protocol. 
+                                Ensure your digital assets reach your loved ones, even when you can't.
+                            </p>
+                        </div>
+
+                        <!-- Features Grid -->
+                        <div class="grid md:grid-cols-3 gap-8 mb-16 hero-features">
+                            <div class="bg-dark-100 rounded-2xl p-6 border border-dark-200 hover:border-primary-500 transition-all duration-300 hover:shadow-xl feature-card">
+                                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center text-2xl mb-4">
+                                    🔒
+                                </div>
+                                <h3 class="text-xl font-bold text-dark-800 mb-3">Non-Custodial</h3>
+                                <p class="text-dark-500">Your keys, your crypto. We never hold or access your funds. Smart contracts handle everything automatically.</p>
+                            </div>
+                            
+                            <div class="bg-dark-100 rounded-2xl p-6 border border-dark-200 hover:border-primary-500 transition-all duration-300 hover:shadow-xl feature-card">
+                                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4">
+                                    ⏱️
+                                </div>
+                                <h3 class="text-xl font-bold text-dark-800 mb-3">Time-Based</h3>
+                                <p class="text-dark-500">Set custom inactivity periods. If you don't check in, your heirs can claim their inheritance.</p>
+                            </div>
+                            
+                            <div class="bg-dark-100 rounded-2xl p-6 border border-dark-200 hover:border-primary-500 transition-all duration-300 hover:shadow-xl feature-card">
+                                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4">
+                                    💝
+                                </div>
+                                <h3 class="text-xl font-bold text-dark-800 mb-3">Multi-Heir</h3>
+                                <p class="text-dark-500">Distribute your assets to multiple heirs with custom percentages. Fair and transparent.</p>
+                            </div>
+                        </div>
+
+                        <!-- Why CryptoHeir Section -->
+                        <div class="bg-gradient-to-r from-dark-100 to-dark-50 rounded-2xl p-8 border border-dark-200 mb-16 hero-stats">
+                            <h3 class="text-2xl font-bold text-dark-800 mb-8 text-center">Why Choose CryptoHeir?</h3>
+                            <div class="grid md:grid-cols-4 gap-8 text-center">
+                                <div>
+                                    <div class="text-4xl mb-4">🔒</div>
+                                    <h4 class="text-lg font-semibold text-dark-800 mb-2">Non-Custodial</h4>
+                                    <p class="text-dark-500 text-sm">We never hold your funds or have access to your private keys</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl mb-4">💰</div>
+                                    <h4 class="text-lg font-semibold text-dark-800 mb-2">Zero Fees</h4>
+                                    <p class="text-dark-500 text-sm">No platform fees, only network gas costs</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl mb-4">⏰</div>
+                                    <h4 class="text-lg font-semibold text-dark-800 mb-2">Time-Based</h4>
+                                    <p class="text-dark-500 text-sm">Automatic inheritance activation after inactivity periods</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl mb-4">🌟</div>
+                                    <h4 class="text-lg font-semibold text-dark-800 mb-2">Open Source</h4>
+                                    <p class="text-dark-500 text-sm">Fully transparent and auditable code</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        <div class="bg-gradient-to-r from-dark-100 to-dark-50 rounded-2xl p-8 border border-dark-200 mb-16 hero-stats">
+                            <div class="grid md:grid-cols-4 gap-8 text-center">
+                                <div>
+                                    <div class="text-3xl font-black text-primary-500 mb-2 stat-number">100%</div>
+                                    <div class="text-dark-600 font-medium">Open Source</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-black text-green-500 mb-2 stat-number">$0</div>
+                                    <div class="text-dark-600 font-medium">Platform Fees</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-black text-purple-500 mb-2 stat-number">∞</div>
+                                    <div class="text-dark-600 font-medium">Token Support</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-black text-blue-500 mb-2 stat-number">24/7</div>
+                                    <div class="text-dark-600 font-medium">Autonomous</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Call to Action -->
+                        <div class="bg-dark-100 rounded-2xl p-8 max-w-2xl mx-auto text-center border border-dark-200 shadow-2xl hero-cta" id="connectPromptSection">
+                            <div class="w-20 h-20 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-3xl shadow-lg">
+                                🔗
+                            </div>
+                            <h2 class="text-3xl font-bold text-dark-800 mb-4">Ready to Secure Your Legacy?</h2>
+                            <p class="text-dark-500 mb-8 text-lg">Connect your wallet to start creating your cryptocurrency inheritance plan. Takes less than 5 minutes to set up.</p>
+                            
+                            <button class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white py-4 px-8 rounded-xl font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-xl mb-4 btn-pulse" id="connectPromptBtn">
+                                🦊 Connect MetaMask Wallet
+                            </button>
+                            
+                            <div class="flex items-center justify-center space-x-4 text-sm text-dark-500">
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-green-500">🔓</span>
+                                    <span>Open Source</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-blue-500">🛡️</span>
+                                    <span>Non-Custodial</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-purple-500">💜</span>
+                                    <span>Free Forever</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Step Progress Section -->
+                <div class="py-16" id="stepProgress">
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Progress Bar -->
+                        <div class="mb-12">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg animate-pulse" id="prevStepIcon">
+                                        1
+                                    </div>
+                                    <span class="text-lg font-semibold text-primary-400" id="prevStepText">Step 1: Connect Wallet</span>
+                                </div>
+                                <div class="flex-1 mx-8 h-1 bg-dark-300 rounded-full">
+                                    <div class="h-full bg-gradient-to-r from-green-500 to-primary-500 rounded-full transition-all duration-500" id="progressBar" style="width: 0%"></div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-dark-300 rounded-full flex items-center justify-center text-dark-500 font-bold" id="currentStepIcon">
+                                        2
+                                    </div>
+                                    <span class="text-lg font-semibold text-dark-500" id="currentStepText">Step 2: Choose Your Path</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Next Steps Preview -->
+                        <div class="grid md:grid-cols-3 gap-6 text-center">
+                            <div class="bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-6 border border-primary-400 shadow-lg" id="step1Box">
+                                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-600 font-bold mx-auto mb-3" id="step1BoxIcon">
+                                    1
+                                </div>
+                                <div class="text-sm font-medium text-white" id="step1BoxStatus">Current Step</div>
+                                <div class="text-xs text-primary-100 mt-1" id="step1BoxDesc">Connect Wallet</div>
+                            </div>
+                            <div class="bg-dark-100 rounded-xl p-6 border border-dark-200 opacity-40" id="step2Box">
+                                <div class="w-8 h-8 bg-dark-300 rounded-full flex items-center justify-center text-dark-500 font-bold mx-auto mb-3" id="step2BoxIcon">
+                                    2
+                                </div>
+                                <div class="text-sm font-medium text-dark-500" id="step2BoxStatus">Next</div>
+                                <div class="text-xs text-dark-500 mt-1" id="step2BoxDesc">Choose Action</div>
+                            </div>
+                            <div class="bg-dark-100 rounded-xl p-6 border border-dark-200 opacity-40" id="step3Box">
+                                <div class="w-8 h-8 bg-dark-300 rounded-full flex items-center justify-center text-dark-500 font-bold mx-auto mb-3" id="step3BoxIcon">
+                                    3
+                                </div>
+                                <div class="text-sm font-medium text-dark-500" id="step3BoxStatus">Next</div>
+                                <div class="text-xs text-dark-500 mt-1" id="step3BoxDesc">Setup</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step Description -->
+                        <div class="text-center mt-8">
+                            <div class="inline-flex items-center space-x-3 bg-gradient-to-r from-dark-100 to-dark-50 rounded-2xl px-8 py-4 border border-dark-200 shadow-lg">
+                                <div class="w-3 h-3 bg-primary-500 rounded-full animate-pulse"></div>
+                                <span class="text-dark-600 font-medium" id="stepDescription">Connect your MetaMask wallet to get started with CryptoHeir.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs - Always visible when connected -->
+                <div class="mb-8 hidden" id="tabNavigation">
+                    <nav class="flex space-x-1 bg-dark-100 p-1 rounded-xl border border-dark-200">
+                        <button class="tab-btn flex-1 py-3 px-6 text-sm font-medium rounded-lg transition-all duration-200 bg-primary-600 text-white shadow-sm" data-tab="home">
+                            <div class="flex items-center justify-center space-x-2">
+                                <span>🏠</span>
+                                <span>Home</span>
+                            </div>
+                        </button>
+                        <button class="tab-btn flex-1 py-3 px-6 text-sm font-medium rounded-lg transition-all duration-200 text-dark-500 hover:text-dark-700 hover:bg-dark-200" data-tab="setup" id="setupManageTab">
+                            <div class="flex items-center justify-center space-x-2">
+                                <span id="setupManageIcon">⚙️</span>
+                                <span id="setupManageText">Setup</span>
+                            </div>
+                        </button>
+                        <button class="tab-btn flex-1 py-3 px-6 text-sm font-medium rounded-lg transition-all duration-200 text-dark-500 hover:text-dark-700 hover:bg-dark-200" data-tab="claim">
+                            <div class="flex items-center justify-center space-x-2">
+                                <span>💎</span>
+                                <span>Claim</span>
+                            </div>
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- App Content -->
+                <div class="hidden" id="appContent">
+                    <!-- Home Tab - Landing page content when connected -->
+                    <div class="tab-content active" id="homeTab">
+                        <div class="space-y-12">
+
+                            <!-- Quick Actions -->
+                            <div class="bg-dark-100 rounded-2xl p-8 border border-dark-200 shadow-xl">
+                                <h3 class="text-2xl font-bold text-dark-800 mb-8 text-center">What would you like to do?</h3>
+                                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                                    <div class="bg-dark-200 rounded-xl p-8 border border-dark-300 hover:border-primary-500 transition-all duration-300 hover:shadow-xl feature-card cursor-pointer group" onclick="document.querySelector('[data-tab=setup]').click()" id="homeSetupCard">
+                                        <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                                            ⚙️
+                                        </div>
+                                        <h4 class="text-xl font-bold text-dark-800 mb-3" id="homeSetupTitle">Setup Your Inheritance</h4>
+                                        <p class="text-dark-500 mb-4" id="homeSetupDesc">Create a new inheritance plan for your digital assets.</p>
+                                        <div class="text-primary-500 font-semibold" id="homeSetupAction">Get Started →</div>
+                                    </div>
+
+                                    <div class="bg-dark-200 rounded-xl p-8 border border-dark-300 hover:border-purple-500 transition-all duration-300 hover:shadow-xl feature-card cursor-pointer group" onclick="document.querySelector('[data-tab=claim]').click()">
+                                        <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                                            💎
+                                        </div>
+                                        <h4 class="text-xl font-bold text-dark-800 mb-3">Claim Inheritance</h4>
+                                        <p class="text-dark-500 mb-4">Check if you're an heir and claim available assets.</p>
+                                        <div class="text-purple-500 font-semibold">Check →</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Status Overview -->
+                            <div class="bg-gradient-to-r from-dark-100 to-dark-50 rounded-2xl p-8 border border-dark-200 shadow-xl">
+                                <h3 class="text-2xl font-bold text-dark-800 mb-8 text-center">Your Status</h3>
+                                <div class="grid md:grid-cols-3 gap-6 text-center">
+                                    <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                        <div class="text-4xl mb-4" id="homeStatusIcon">⏱️</div>
+                                        <div class="text-lg font-semibold text-dark-800" id="homeStatusText">Not Set Up</div>
+                                        <div class="text-sm text-dark-500 mt-2" id="homeStatusDesc">Click Setup to get started</div>
+                                    </div>
+                                    <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                        <div class="text-4xl mb-4">🌐</div>
+                                        <div class="text-lg font-semibold text-dark-800" id="homeNetworkName">Loading...</div>
+                                        <div class="text-sm text-dark-500 mt-2">Connected Network</div>
+                                    </div>
+                                    <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                        <div class="text-4xl mb-4">🔗</div>
+                                        <div class="text-lg font-semibold text-dark-800" id="homeWalletAddr">Connected</div>
+                                        <div class="text-sm text-dark-500 mt-2">Wallet Address</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Setup Tab (Dynamic) -->
+                    <div class="tab-content" id="setupTab">
+                        <div class="space-y-8">
+                            <!-- Main Content Container -->
+                            <div class="bg-dark-100 rounded-2xl p-8 border border-dark-200 shadow-xl">
+                            
+                            <div class="mb-8 p-4 bg-dark-200 rounded-xl border border-dark-300" id="inheritanceStatus">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full" id="statusIndicator"></div>
+                                    <span id="statusText" class="text-dark-600 font-medium">Not Set Up</span>
+                                </div>
+                            </div>
+
+                            <form id="setupForm" class="space-y-8">
+                                <div class="space-y-4">
+                                    <label class="block text-sm font-semibold text-dark-700 mb-2">⏱️ Inactivity Period</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <input type="number" id="inactivityPeriod" min="1" value="180" required 
+                                               class="form-input" placeholder="Enter duration">
+                                        <select id="timeUnit" class="form-select">
+                                            <option value="minutes">Minutes</option>
+                                            <option value="hours">Hours</option>
+                                            <option value="days" selected>Days</option>
+                                            <option value="weeks">Weeks</option>
+                                            <option value="months">Months</option>
+                                            <option value="years">Years</option>
+                                        </select>
+                                    </div>
+                                    <p class="text-sm text-dark-500">Time before inheritance becomes available to heirs</p>
+                                    <div class="p-3 bg-primary-950 border border-primary-700 rounded-lg" id="timePreview">
+                                        <span class="text-primary-300 text-sm font-medium">≈ 180 days (15,552,000 seconds)</span>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <span class="text-sm font-medium text-dark-600">Quick presets:</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="30" data-unit="minutes">30min</button>
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="24" data-unit="hours">1 day</button>
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="7" data-unit="days">1 week</button>
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="30" data-unit="days">1 month</button>
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="180" data-unit="days">6 months</button>
+                                            <button type="button" class="btn-secondary text-xs time-preset" data-value="1" data-unit="years">1 year</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <label class="block text-sm font-semibold text-dark-700 mb-2">👥 Heirs & Percentages</label>
+                                    <div class="space-y-3" id="heirsContainer">
+                                        <div class="heir-entry grid grid-cols-1 md:grid-cols-12 gap-3 p-4 bg-dark-200 rounded-xl border border-dark-300">
+                                            <input type="text" placeholder="Heir address (0x...)" class="heir-address form-input md:col-span-8" required>
+                                            <input type="number" placeholder="%" min="1" max="100" class="heir-percentage form-input md:col-span-2" required>
+                                            <button type="button" class="btn-danger md:col-span-2 remove-heir">Remove</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <button type="button" class="btn-secondary" id="addHeirBtn">
+                                            <span class="mr-2">+</span>Add Heir
+                                        </button>
+                                        <div class="px-4 py-2 bg-dark-200 rounded-lg border border-dark-300" id="totalPercentage">
+                                            <span class="text-sm font-medium text-dark-600">Total: 0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <label class="block text-sm font-semibold text-dark-700 mb-2">🪙 Tokens to Include</label>
+                                    
+                                    <!-- Your Tokens Quick Add Section -->
+                                    <div class="bg-dark-100 rounded-xl p-4 border border-dark-200 mb-4" id="yourTokensSection">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="text-sm font-semibold text-dark-700 flex items-center space-x-2">
+                                                <span>💰</span>
+                                                <span>Your Tokens</span>
+                                            </h4>
+                                            <button type="button" class="btn-secondary text-xs px-3 py-1" id="refreshTokensBtn">
+                                                🔄 Refresh
+                                            </button>
+                                        </div>
+                                        <div class="space-y-2" id="userTokensList">
+                                            <div class="text-center py-4 text-dark-500 text-sm">
+                                                <div class="animate-spin w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                                                Loading your tokens...
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Manual Token Entry -->
+                                    <div class="space-y-3">
+                                        <label class="block text-xs font-semibold text-dark-600 mt-4 mb-2">✍️ Manual Entry</label>
+                                        <div class="space-y-3" id="tokensContainer">
+                                        <div class="token-entry grid grid-cols-1 md:grid-cols-12 gap-3 p-4 bg-dark-200 rounded-xl border border-dark-300">
+                                            <input type="text" placeholder="Token address (0x...)" class="token-address form-input md:col-span-10">
+                                            <button type="button" class="btn-danger md:col-span-2 remove-token">Remove</button>
+                                        </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary" id="addTokenBtn">
+                                            <span class="mr-2">+</span>Add Token
+                                        </button>
+                                    </div>
+                                    <div class="p-3 bg-blue-950 border border-blue-700 rounded-lg">
+                                        <p class="text-blue-300 text-sm">ℹ️ Tokens will be automatically approved for inheritance during setup</p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6">
+                                    <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg glow-primary">
+                                        Setup Inheritance
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Manage Interface (shown when inheritance is set up) -->
+                            <div class="hidden space-y-8" id="manageInterface">
+                                <!-- Current Status -->
+                                <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>📈</span>
+                                        <span>Current Status</span>
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="statusGrid">
+                                        <div class="bg-dark-100 rounded-lg p-4 border border-dark-300">
+                                            <div class="text-sm text-dark-500 mb-1">Status</div>
+                                            <div class="text-lg font-semibold text-dark-800" id="currentStatus">Loading...</div>
+                                        </div>
+                                        <div class="bg-dark-100 rounded-lg p-4 border border-dark-300">
+                                            <div class="text-sm text-dark-500 mb-1">Last Heartbeat</div>
+                                            <div class="text-lg font-semibold text-dark-800" id="lastActivity">Loading...</div>
+                                        </div>
+                                        <div class="bg-dark-100 rounded-lg p-4 border border-dark-300">
+                                            <div class="text-sm text-dark-500 mb-1">Inactivity Period</div>
+                                            <div class="text-lg font-semibold text-dark-800" id="inactivityPeriodDisplay">Loading...</div>
+                                        </div>
+                                        <div class="bg-dark-100 rounded-lg p-4 border border-dark-300">
+                                            <div class="text-sm text-dark-500 mb-1">Time Until Inheritance</div>
+                                            <div class="text-lg font-semibold text-dark-800" id="timeUntilInheritance">Loading...</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Heartbeat Management -->
+                                <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>💓</span>
+                                        <span>Heartbeat Management</span>
+                                    </h3>
+                                    <div class="flex flex-wrap gap-3">
+                                        <button class="btn-primary" id="updateActivityBtn">Send Heartbeat</button>
+                                        <button class="btn-warning" id="pauseBtn">Pause Inheritance</button>
+                                        <button class="btn-success hidden" id="unpauseBtn">Unpause Inheritance</button>
+                                    </div>
+                                </div>
+
+                                <!-- Heirs Management -->
+                                <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>👥</span>
+                                        <span>Current Heirs</span>
+                                    </h3>
+                                    <div class="mb-4" id="currentHeirs">
+                                        <div class="text-dark-500">Loading...</div>
+                                    </div>
+                                    <button class="btn btn-secondary" id="updateHeirsBtn">Update Heirs</button>
+                                </div>
+
+                                <!-- Token Management -->
+                                <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>🪙</span>
+                                        <span>Selected Tokens</span>
+                                    </h3>
+                                    <div class="mb-4" id="currentTokens">
+                                        <div class="text-dark-500">Loading...</div>
+                                    </div>
+                                    <div class="flex flex-col sm:flex-row gap-3">
+                                        <input type="text" id="newTokenAddress" placeholder="Token address to add" 
+                                               class="form-input flex-1">
+                                        <button class="btn btn-secondary" id="addNewTokenBtn">Add Token</button>
+                                    </div>
+                                    <div class="p-3 bg-blue-950 border border-blue-700 rounded-lg mt-3">
+                                        <p class="text-blue-300 text-sm">ℹ️ New tokens will be automatically approved when added</p>
+                                    </div>
+                                </div>
+
+                                <!-- Danger Zone -->
+                                <div class="bg-red-950 border border-red-700 rounded-xl p-6">
+                                    <h3 class="text-lg font-semibold text-red-400 mb-4 flex items-center space-x-2">
+                                        <span>⚠️</span>
+                                        <span>Danger Zone</span>
+                                    </h3>
+                                    <div class="space-y-3">
+                                        <button class="btn-danger" id="deactivateBtn">Deactivate Inheritance</button>
+                                        <p class="text-red-300 text-sm">This will completely remove your inheritance setup</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claim Tab -->
+                    <div class="tab-content" id="claimTab">
+                        <div class="bg-dark-100 rounded-2xl p-8 border border-dark-200 shadow-2xl">
+                            <div class="flex items-center space-x-3 mb-8">
+                                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                    💎
+                                </div>
+                                <h2 class="text-2xl font-bold text-dark-800">Claim Inheritance</h2>
+                            </div>
+                            
+                            <div class="space-y-8">
+                                <!-- User Search -->
+                                <div class="bg-dark-200 rounded-xl p-6 border border-dark-300">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>🔍</span>
+                                        <span>Enter User Address</span>
+                                    </h3>
+                                    <div class="flex flex-col sm:flex-row gap-3">
+                                        <input type="text" id="userAddressInput" placeholder="User address (0x...)" 
+                                               class="form-input flex-1">
+                                        <button class="btn-primary" id="checkInheritanceBtn">Check Inheritance</button>
+                                    </div>
+                                </div>
+
+                                <!-- Inheritance Info -->
+                                <div class="hidden bg-dark-200 rounded-xl p-6 border border-dark-300" id="inheritanceInfo">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>📋</span>
+                                        <span>Inheritance Information</span>
+                                    </h3>
+                                    <div id="inheritanceDetails"></div>
+                                </div>
+
+                                <!-- Claimable Tokens -->
+                                <div class="hidden bg-dark-200 rounded-xl p-6 border border-dark-300" id="claimableTokens">
+                                    <h3 class="text-lg font-semibold text-dark-800 mb-4 flex items-center space-x-2">
+                                        <span>🪙</span>
+                                        <span>Claimable Tokens</span>
+                                    </h3>
+                                    <div id="tokensClaimList"></div>
+                                    <div class="hidden mt-4 p-4 bg-yellow-950 border border-yellow-700 rounded-lg" id="manualApproveSection">
+                                        <div class="text-center">
+                                            <h4 class="text-yellow-400 font-semibold mb-2">⚠️ Token Approval Required</h4>
+                                            <p class="text-yellow-300 text-sm mb-4">The token owner needs to approve the contract before heirs can claim.</p>
+                                            <button class="btn-warning" onclick="approveTokenForClaiming()">Approve Token</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay hidden" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing transaction...</div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+        
+        <!-- Update Heirs Modal -->
+        <div class="modal-overlay hidden" id="updateHeirsModal" onclick="if (event.target === this) closeUpdateHeirsModal()">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="text-xl font-bold text-dark-800">Update Your Heirs</h3>
+                    <button class="modal-close" onclick="closeUpdateHeirsModal()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <p class="text-dark-600 mb-6">
+                        Add, remove, or modify your inheritance beneficiaries. Total percentages must not exceed 100%.
+                    </p>
+                    
+                    <!-- Current Heirs List -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-dark-700">Current Heirs</h4>
+                            <div class="text-sm text-dark-500">
+                                Total: <span id="modalPercentageTotal" class="font-semibold">0%</span>
+                            </div>
+                        </div>
+                        
+                        <div id="modalHeirsContainer" class="space-y-3">
+                            <!-- Heirs will be populated here -->
+                        </div>
+                        
+                        <button type="button" 
+                                class="btn btn-secondary mt-3" 
+                                onclick="addHeirToModal()">
+                            + Add Another Heir
+                        </button>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-3">
+                        <button type="button" 
+                                class="btn btn-secondary flex-1" 
+                                onclick="closeUpdateHeirsModal()">
+                            Cancel
+                        </button>
+                        <button type="button" 
+                                class="btn btn-primary flex-1" 
+                                onclick="saveHeirsUpdate()">
+                            Update Heirs
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="bg-dark-100 border-t border-dark-200 py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="inline-flex items-center space-x-2 bg-dark-200 rounded-full px-6 py-3 border border-dark-300">
+                    <span class="text-2xl">⭐</span>
+                    <span class="text-dark-600 font-medium">Built by the community, for the community</span>
+                    <a href="#" class="text-primary-500 hover:text-primary-400 font-semibold">View on GitHub</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="js/contract-abi.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/contract.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/sepolia-tokens.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
